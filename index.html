@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confort+ | Chaussures de Sport Ultra-Confort</title>
+
+  <!-- ============================================================ -->
+  <!--  ✅ PIXEL FACEBOOK : Collez votre code Pixel ICI            -->
+  <!--  (entre les balises <head>...</head>)                        -->
+  <!--  Exemple :                                                   -->
+  <!--  <script>                                                    -->
+  <!--    !function(f,b,e,v,n,t,s){...}(window,...);               -->
+  <!--    fbq('init', 'VOTRE_PIXEL_ID');                           -->
+  <!--    fbq('track', 'PageView');                                 -->
+  <!--  </script>                                                   -->
+  <!-- ============================================================ -->
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:   '#FF5A00',
+            dark:    '#0A0A0A',
+            gold:    '#FFD700',
+            success: '#16A34A',
+          },
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #F8F8F8; color: #0A0A0A; margin: 0; }
+
+    /* ── CTA pulse animation ────────────────────────────────── */
+    @keyframes pulse-glow {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 90, 0, 0.7); transform: scale(1); }
+      50%  { box-shadow: 0 0 0 14px rgba(255, 90, 0, 0);  transform: scale(1.03); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 90, 0, 0);    transform: scale(1); }
+    }
+    .cta-pulse { animation: pulse-glow 1.8s ease-in-out infinite; }
+
+    /* ── Urgency badge blink ────────────────────────────────── */
+    @keyframes blink-badge {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+    .badge-blink { animation: blink-badge 1.2s ease-in-out infinite; }
+
+    /* ── Stars ──────────────────────────────────────────────── */
+    .stars { color: #FFD700; letter-spacing: 2px; }
+
+    /* ── Color swatch buttons ───────────────────────────────── */
+    .color-btn { transition: transform 0.15s, box-shadow 0.15s; }
+    .color-btn.active { transform: scale(1.12); box-shadow: 0 0 0 3px #FF5A00; }
+
+    /* ── Size buttons ───────────────────────────────────────── */
+    .size-btn { transition: all 0.15s; }
+    .size-btn.active { background: #FF5A00 !important; color: #fff !important; border-color: #FF5A00 !important; }
+
+    /* ── Pack cards ─────────────────────────────────────────── */
+    /*
+      État normal   : fond blanc, bordure grise claire
+      État .active  : bordure orange épaisse + fond orange très pâle
+      Le prix est TOUJOURS affiché en grand — la sélection ne change que la bordure
+    */
+    .pack-card {
+      transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: 2.5px solid #E5E7EB;
+      background: #ffffff;
+    }
+    .pack-card.active {
+      border-color: #FF5A00;
+      background: #FFF7F2;
+      box-shadow: 0 0 0 3px rgba(255,90,0,0.12);
+    }
+    /* Prix toujours visible en orange quand la carte est sélectionnée */
+    .pack-card.active .pack-price { color: #FF5A00; }
+    .pack-card.active .radio-ring { border-color: #FF5A00; }
+    .pack-card.active .radio-dot  { background: #FF5A00; transform: scale(1); }
+    .pack-card .radio-dot { transform: scale(0); transition: transform 0.15s; }
+
+    /* ── Form inputs ────────────────────────────────────────── */
+    .form-input:focus { outline: none; border-color: #FF5A00; box-shadow: 0 0 0 3px rgba(255,90,0,0.15); }
+
+    /* ── Success overlay ────────────────────────────────────── */
+    #success-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #success-overlay.show { display: flex; }
+
+    /* ── Scroll-reveal fade ─────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Benefit icon ring ──────────────────────────────────── */
+    .benefit-ring { background: linear-gradient(135deg, #FF5A00 0%, #ff8c42 100%); }
+
+    /* ── Image swap transition ──────────────────────────────── */
+    #product-image { transition: opacity 0.25s ease; }
+    #product-image.swapping { opacity: 0; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║            1 · EN-TÊTE (HEADER)             ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <header class="sticky top-0 z-50 bg-dark shadow-md">
+    <div class="max-w-lg mx-auto flex items-center justify-between px-4 py-3">
+
+      <!-- Logo fictif -->
+      <div class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-brand" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M21 9.5c0-.28-.22-.5-.5-.5H18V7a1 1 0 0 0-1.45-.9L13 8H5a3 3 0 0 0-3 3v1a3 3 0 0 0 3 3h1.05A2.5 2.5 0 0 0 8.5 17a2.5 2.5 0 0 0 2.45-2h3.1A2.5 2.5 0 0 0 16.5 17a2.5 2.5 0 0 0 2.45-2H20a1 1 0 0 0 1-1V9.5zM8.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </svg>
+        <span class="text-white font-extrabold text-lg tracking-tight">CONFORT<span class="text-brand">+</span></span>
+      </div>
+
+      <!-- Badge urgence clignotant -->
+      <div class="badge-blink bg-brand text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-lg">
+        🔥 -50% Aujourd'hui
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║              2 · SECTION HERO               ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <section class="bg-dark text-white pt-8 pb-10 px-4">
+    <div class="max-w-lg mx-auto text-center">
+
+      <p class="text-brand text-xs font-bold uppercase tracking-widest mb-3">✦ Nouveauté 2025</p>
+
+      <h1 class="text-3xl font-black leading-tight mb-4">
+        Marchez sur un nuage :<br />
+        <span class="text-brand">Le confort ultime</span> pour<br />
+        vos pieds au quotidien
+      </h1>
+
+      <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+        Technologie orthopédique avancée · Semelle amortissante · Légèreté incomparable.
+        Commandez maintenant et recevez chez vous en 48h.
+      </p>
+
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <!--  🖼️  IMAGE PRINCIPALE DU PRODUIT                      -->
+      <!--                                                        -->
+      <!--  Cette image change automatiquement selon la couleur   -->
+      <!--  choisie. Elle est contrôlée par le dictionnaire       -->
+      <!--  COLOR_IMAGES dans le bloc <script> en bas de page.    -->
+      <!--                                                        -->
+      <!--  Remplacez la valeur de "src" ci-dessous par le lien   -->
+      <!--  de votre image par défaut (couleur Noir).             -->
+      <!--  Taille recommandée : 600×480 px, fond blanc/neutre.   -->
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <div class="relative mx-auto mb-6 rounded-2xl overflow-hidden bg-white/5 border border-white/10" style="max-width:340px;">
+        <img
+          id="product-image"
+          src="https://placehold.co/600x480/1a1a1a/FF5A00?text=📸+Image+Noir"
+          alt="Chaussures de Sport Confort+ — couleur sélectionnée"
+          class="w-full object-cover"
+        />
+        <div class="absolute top-3 left-3 bg-brand text-white text-xs font-black px-2.5 py-1 rounded-full shadow-lg">
+          -50% OFF
+        </div>
+        <!-- Badge couleur dynamique -->
+        <div id="color-badge" class="absolute bottom-3 right-3 bg-dark/80 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
+          Couleur : Noir
+        </div>
+      </div>
+
+      <!-- Prix barré -->
+      <div class="flex items-center justify-center gap-3 mb-5">
+        <span class="text-gray-500 line-through text-base">9 000 DA</span>
+        <span class="text-brand font-black text-3xl">4 500 DA</span>
+        <span class="bg-brand/20 text-brand text-xs font-bold px-2 py-0.5 rounded-full">Économie : 4 500 DA</span>
+      </div>
+
+      <!-- Bouton CTA animé -->
+      <button
+        onclick="scrollToOrder()"
+        class="cta-pulse w-full bg-brand text-white font-extrabold text-lg py-4 px-6 rounded-2xl uppercase tracking-wide shadow-xl"
+      >
+        🛒 Commander maintenant
+        <br /><span class="text-sm font-medium opacity-90">Profiter de l'offre — Paiement à la livraison</span>
+      </button>
+
+      <div class="flex justify-center gap-6 mt-5 text-gray-400 text-xs">
+        <span>✅ Livraison rapide</span>
+        <span>🔒 Paiement sécurisé</span>
+        <span>↩️ Retour facile</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║           3 · SECTION BÉNÉFICES             ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <section class="py-10 px-4 bg-white">
+    <div class="max-w-lg mx-auto">
+
+      <p class="text-center text-brand text-xs font-bold uppercase tracking-widest mb-1">Pourquoi choisir Confort+ ?</p>
+      <h2 class="text-center text-2xl font-black text-dark mb-8">Ce que vous ressentez dès le premier pas</h2>
+
+      <div class="grid grid-cols-1 gap-5">
+
+        <div class="reveal flex items-start gap-4 bg-gray-50 rounded-2xl p-5 border border-gray-100">
+          <div class="benefit-ring w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1M4.22 4.22l.71.71M18.36 18.36l.71.71M3 12H2m20 0h-1M4.93 19.07l.71-.71M18.36 5.64l.71-.71M12 6a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-dark text-base mb-1">Matériau respirant haute performance</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Tissu mesh 3D ultra-aéré qui laisse vos pieds respirer toute la journée. Fini les odeurs et l'inconfort, même après des heures de marche.</p>
+          </div>
+        </div>
+
+        <div class="reveal flex items-start gap-4 bg-gray-50 rounded-2xl p-5 border border-gray-100">
+          <div class="benefit-ring w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-dark text-base mb-1">Semelle orthopédique anti-douleur</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Semelle en mousse mémoire qui épouse la forme de votre pied. Soulagement immédiat des douleurs aux talons, aux genoux et au dos.</p>
+          </div>
+        </div>
+
+        <div class="reveal flex items-start gap-4 bg-gray-50 rounded-2xl p-5 border border-gray-100">
+          <div class="benefit-ring w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-dark text-base mb-1">Idéal pour la marche, le sport & le travail</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Conçu pour s'adapter à tous vos rythmes de vie : randonnée, gym, journée au bureau ou simple promenade. Une seule chaussure pour tout.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║         4 · SECTION PREUVE SOCIALE          ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <section class="py-10 px-4 bg-gray-50">
+    <div class="max-w-lg mx-auto">
+
+      <p class="text-center text-brand text-xs font-bold uppercase tracking-widest mb-1">Témoignages clients</p>
+      <h2 class="text-center text-2xl font-black text-dark mb-2">+2 300 clients satisfaits</h2>
+      <p class="text-center text-gray-500 text-sm mb-7">Note moyenne : ⭐ 4.9 / 5</p>
+
+      <div class="grid grid-cols-1 gap-4">
+
+        <div class="reveal bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-11 h-11 rounded-full bg-brand/20 flex items-center justify-center text-brand font-black text-lg flex-shrink-0">K</div>
+            <div>
+              <p class="font-bold text-dark text-sm">Karim B.</p>
+              <p class="text-gray-400 text-xs">Alger · Client vérifié ✅</p>
+            </div>
+            <div class="ml-auto stars text-base">★★★★★</div>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            "Franchement je pensais que c'était trop beau pour être vrai… mais ces chaussures sont incroyables ! Je reste debout toute la journée au travail et depuis que j'ai commandé deux paires, mes douleurs au pied ont vraiment diminué. Livraison en 2 jours à Alger, très rapide !"
+          </p>
+          <p class="text-gray-300 text-xs mt-2">Il y a 5 jours</p>
+        </div>
+
+        <div class="reveal bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-11 h-11 rounded-full bg-brand/20 flex items-center justify-center text-brand font-black text-lg flex-shrink-0">S</div>
+            <div>
+              <p class="font-bold text-dark text-sm">Samira M.</p>
+              <p class="text-gray-400 text-xs">Oran · Cliente vérifiée ✅</p>
+            </div>
+            <div class="ml-auto stars text-base">★★★★★</div>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            "Je suis infirmière et je marche des heures dans les couloirs. Ces chaussures ont changé ma vie professionnelle ! Légères, confortables et très jolies. J'ai commandé le pack 3 paires pour avoir toujours une paire propre disponible. Je recommande à 100% !"
+          </p>
+          <p class="text-gray-300 text-xs mt-2">Il y a 12 jours</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║         5+6 · BLOC D'ACHAT + FORMULAIRE                ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <section id="order-section" class="py-10 px-4 bg-dark">
+    <div class="max-w-lg mx-auto">
+
+      <p class="text-center text-brand text-xs font-bold uppercase tracking-widest mb-1">Commander maintenant</p>
+      <h2 class="text-center text-2xl font-black text-white mb-2">Choisissez votre offre</h2>
+      <p class="text-center text-gray-400 text-sm mb-7">🔒 Paiement à la livraison · Livraison partout en Algérie</p>
+
+
+      <!-- ── CHOIX DE LA COULEUR ─────────────────────────────── -->
+      <!--
+        CORRECTION 3 : Le clic sur une couleur change instantanément
+        l'image produit via le dictionnaire COLOR_IMAGES dans le <script>.
+      -->
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-3 uppercase tracking-wide">
+          Couleur <span class="text-gray-400 font-normal normal-case text-xs">(requis)</span>
+        </p>
+        <div class="flex gap-3">
+
+          <button onclick="selectColor(this, 'Noir')" data-color="Noir"
+            class="color-btn active flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full bg-black border-2 border-white/30 block"></span>
+            Noir
+          </button>
+
+          <button onclick="selectColor(this, 'Blanc')" data-color="Blanc"
+            class="color-btn flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full bg-white border-2 border-gray-300 block"></span>
+            Blanc
+          </button>
+
+          <button onclick="selectColor(this, 'Gris')" data-color="Gris"
+            class="color-btn flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full border-2 border-gray-500 block" style="background:#9CA3AF;"></span>
+            Gris
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- ── CHOIX DE LA POINTURE ───────────────────────────── -->
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-3 uppercase tracking-wide">
+          Pointure <span class="text-gray-400 font-normal normal-case text-xs">(requis)</span>
+        </p>
+        <div id="size-buttons" class="flex flex-wrap gap-2"></div>
+      </div>
+
+
+      <!-- ── CHOIX DU PACK ─────────────────────────────────────────────────── -->
+      <!--
+        CORRECTION 1 : Prix TOUJOURS visibles en gros dans chaque carte.
+        Le clic ne fait que changer la bordure (border orange) pour indiquer
+        la sélection. Le total se met à jour dans le récapitulatif ci-dessous.
+        Les prix ne sont PAS cachés ou révélés au clic.
+      -->
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-4 uppercase tracking-wide">Choisissez votre offre</p>
+
+        <!-- ─── PACK 1 ────────────────────────────────────────────────── -->
+        <div onclick="selectPack(this, 1, '1 paire', 4500)"
+          class="pack-card rounded-2xl p-4 mb-3"
+          data-pack="1">
+
+          <div class="flex items-center gap-3">
+            <!-- Bouton radio visuel -->
+            <div class="radio-ring w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center flex-shrink-0">
+              <div class="radio-dot w-3 h-3 rounded-full bg-brand"></div>
+            </div>
+
+            <!-- Infos pack (gauche) -->
+            <div class="flex-1">
+              <p class="font-bold text-dark text-sm leading-tight">Pack 1 · 1 Paire</p>
+              <p class="text-gray-400 text-xs">Idéal pour essayer</p>
+            </div>
+
+            <!-- Prix (droite) — TOUJOURS VISIBLE EN GROS -->
+            <div class="text-right">
+              <p class="pack-price font-black text-dark text-2xl leading-none">4 500</p>
+              <p class="text-gray-500 text-xs font-semibold">DA</p>
+            </div>
+          </div>
+
+        </div><!-- /Pack 1 -->
+
+        <!-- ─── PACK 2 (Recommandé) ──────────────────────────────────── -->
+        <div onclick="selectPack(this, 2, '2 paires', 7500)"
+          class="pack-card active rounded-2xl p-4 mb-3 relative mt-5"
+          data-pack="2">
+
+          <!-- Badge "Le plus populaire" -->
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand text-white text-xs font-black px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+            ⭐ Le Plus Populaire — Recommandé
+          </div>
+
+          <div class="flex items-center gap-3 mt-1">
+            <!-- Bouton radio visuel -->
+            <div class="radio-ring w-6 h-6 rounded-full border-2 border-brand flex items-center justify-center flex-shrink-0">
+              <div class="radio-dot w-3 h-3 rounded-full bg-brand" style="transform:scale(1)"></div>
+            </div>
+
+            <!-- Infos pack (gauche) -->
+            <div class="flex-1">
+              <p class="font-bold text-dark text-sm leading-tight">Pack 2 · 2 Paires</p>
+              <span class="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full mt-0.5">
+                Économie 1 500 DA
+              </span>
+            </div>
+
+            <!-- Prix (droite) — TOUJOURS VISIBLE EN GROS -->
+            <div class="text-right">
+              <p class="pack-price font-black text-brand text-2xl leading-none">7 500</p>
+              <p class="text-xs font-semibold text-gray-400 line-through">9 000 DA</p>
+              <p class="text-gray-500 text-xs">3 750 DA/paire</p>
+            </div>
+          </div>
+
+        </div><!-- /Pack 2 -->
+
+        <!-- ─── PACK 3 ────────────────────────────────────────────────── -->
+        <div onclick="selectPack(this, 3, '3 paires', 9900)"
+          class="pack-card rounded-2xl p-4"
+          data-pack="3">
+
+          <div class="flex items-center gap-3">
+            <!-- Bouton radio visuel -->
+            <div class="radio-ring w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center flex-shrink-0">
+              <div class="radio-dot w-3 h-3 rounded-full bg-brand"></div>
+            </div>
+
+            <!-- Infos pack (gauche) -->
+            <div class="flex-1">
+              <p class="font-bold text-dark text-sm leading-tight">Pack 3 · 3 Paires</p>
+              <span class="inline-block bg-blue-50 text-blue-600 text-xs font-bold px-2 py-0.5 rounded-full mt-0.5">
+                🚚 Livraison Gratuite !
+              </span>
+            </div>
+
+            <!-- Prix (droite) — TOUJOURS VISIBLE EN GROS -->
+            <div class="text-right">
+              <p class="pack-price font-black text-dark text-2xl leading-none">9 900</p>
+              <p class="text-gray-500 text-xs font-semibold">DA</p>
+              <p class="text-gray-400 text-xs">3 300 DA/paire</p>
+            </div>
+          </div>
+
+        </div><!-- /Pack 3 -->
+
+      </div><!-- /Choix du pack -->
+
+
+      <!-- ── RÉCAPITULATIF DYNAMIQUE ──────────────────────────── -->
+      <!--
+        CORRECTION 2 : Ce bloc affiche TOUJOURS le total exact.
+        Il se met à jour dès que le client change de couleur,
+        de pointure OU de pack. Le prix total est mis en évidence.
+      -->
+      <div class="bg-white/10 border border-white/20 rounded-2xl p-4 mb-6">
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-3 font-semibold">📋 Récapitulatif de votre commande</p>
+
+        <!-- Détails choix -->
+        <div id="summary-details" class="text-gray-300 text-sm space-y-1 mb-3">
+          <p>📦 Pack : <strong class="text-white" id="sum-pack">Pack 2 (2 paires)</strong></p>
+          <p>🎨 Couleur : <strong class="text-white" id="sum-color">Noir</strong></p>
+          <p>👟 Pointure : <strong class="text-white" id="sum-size"><span class="text-brand">Non choisie ⚠️</span></strong></p>
+        </div>
+
+        <!-- Séparateur -->
+        <div class="border-t border-white/15 pt-3">
+          <div class="flex items-center justify-between">
+            <p class="text-white/70 text-sm font-semibold">💰 Total à payer à la livraison</p>
+            <!-- Total en très grand — se met à jour en JS -->
+            <p id="sum-total" class="text-brand font-black text-3xl leading-none">7 500 <span class="text-lg font-bold">DA</span></p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ── FORMULAIRE DE COMMANDE ─────────────────────────── -->
+      <div id="order-form-container" class="bg-white rounded-3xl p-5 shadow-2xl">
+
+        <h3 class="font-black text-dark text-lg mb-1">📝 Vos informations de livraison</h3>
+        <p class="text-gray-500 text-xs mb-5">Remplissez le formulaire — notre équipe vous appellera pour confirmer.</p>
+
+        <!-- Champ Nom & Prénom -->
+        <div class="mb-4">
+          <label class="block text-dark font-semibold text-sm mb-1.5" for="fullname">Nom et Prénom</label>
+          <input type="text" id="fullname" placeholder="Ex : Ahmed Benali"
+            class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark placeholder-gray-400 transition" required />
+        </div>
+
+        <!-- Champ Téléphone -->
+        <div class="mb-4">
+          <label class="block text-dark font-semibold text-sm mb-1.5" for="phone">
+            Numéro de Téléphone <span class="text-brand">*</span>
+          </label>
+          <input type="tel" id="phone" placeholder="Ex : 0551 23 45 67"
+            class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark placeholder-gray-400 transition" required />
+          <p class="text-gray-400 text-xs mt-1">📞 Un agent vous appellera sur ce numéro pour confirmer</p>
+        </div>
+
+        <!-- Champ Ville / Wilaya -->
+        <div class="mb-5">
+          <label class="block text-dark font-semibold text-sm mb-1.5" for="city">Ville / Wilaya</label>
+          <select id="city" class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark transition bg-white" required>
+            <option value="">-- Choisissez votre Wilaya --</option>
+            <option>01 - Adrar</option><option>02 - Chlef</option><option>03 - Laghouat</option>
+            <option>04 - Oum El Bouaghi</option><option>05 - Batna</option><option>06 - Béjaïa</option>
+            <option>07 - Biskra</option><option>08 - Béchar</option><option>09 - Blida</option>
+            <option>10 - Bouira</option><option>11 - Tamanrasset</option><option>12 - Tébessa</option>
+            <option>13 - Tlemcen</option><option>14 - Tiaret</option><option>15 - Tizi Ouzou</option>
+            <option>16 - Alger</option><option>17 - Djelfa</option><option>18 - Jijel</option>
+            <option>19 - Sétif</option><option>20 - Saïda</option><option>21 - Skikda</option>
+            <option>22 - Sidi Bel Abbès</option><option>23 - Annaba</option><option>24 - Guelma</option>
+            <option>25 - Constantine</option><option>26 - Médéa</option><option>27 - Mostaganem</option>
+            <option>28 - M'Sila</option><option>29 - Mascara</option><option>30 - Ouargla</option>
+            <option>31 - Oran</option><option>32 - El Bayadh</option><option>33 - Illizi</option>
+            <option>34 - Bordj Bou Arréridj</option><option>35 - Boumerdès</option>
+            <option>36 - El Tarf</option><option>37 - Tindouf</option><option>38 - Tissemsilt</option>
+            <option>39 - El Oued</option><option>40 - Khenchela</option><option>41 - Souk Ahras</option>
+            <option>42 - Tipaza</option><option>43 - Mila</option><option>44 - Aïn Defla</option>
+            <option>45 - Naâma</option><option>46 - Aïn Témouchent</option><option>47 - Ghardaïa</option>
+            <option>48 - Relizane</option><option>49 - El M'Ghair</option><option>50 - El Meniaa</option>
+            <option>51 - Ouled Djellal</option><option>52 - Bordj Badji Mokhtar</option>
+            <option>53 - Béni Abbès</option><option>54 - Timimoun</option><option>55 - Touggourt</option>
+            <option>56 - Djanet</option><option>57 - In Salah</option><option>58 - In Guezzam</option>
+          </select>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-sm mb-4 font-medium">
+          ⚠️ Veuillez remplir tous les champs obligatoires.
+        </div>
+
+        <!-- Bouton de soumission final -->
+        <button id="submit-btn" onclick="submitOrder()"
+          class="w-full bg-brand text-white font-extrabold text-base py-4 px-6 rounded-2xl uppercase tracking-wide shadow-lg active:scale-95 transition-transform">
+          ✅ CONFIRMER MA COMMANDE
+          <br /><span class="text-sm font-normal normal-case opacity-90">💳 Paiement à la livraison — Sans risque</span>
+        </button>
+
+        <div class="flex items-center justify-center gap-4 mt-4 text-gray-400 text-xs">
+          <span>🔒 100% sécurisé</span>
+          <span>📦 Livraison fiable</span>
+          <span>📞 Support actif</span>
+        </div>
+
+      </div><!-- /Formulaire -->
+
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║               FOOTER MINIMAL                ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <footer class="bg-black py-6 px-4 text-center">
+    <p class="text-white font-extrabold text-base tracking-tight mb-1">CONFORT<span class="text-brand">+</span></p>
+    <p class="text-gray-600 text-xs">© 2025 Confort+ · Tous droits réservés · Algérie</p>
+    <p class="text-gray-700 text-xs mt-2">Paiement 100% à la livraison · Livraison partout en Algérie</p>
+  </footer>
+
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║         OVERLAY SUCCÈS (pop-up)             ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <div id="success-overlay" role="dialog" aria-modal="true" aria-label="Commande confirmée">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl">
+      <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+        <svg class="w-10 h-10 text-success" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h2 class="text-dark font-black text-2xl mb-2">Commande enregistrée ! 🎉</h2>
+      <p class="text-gray-600 text-sm leading-relaxed mb-4">
+        <strong>Merci !</strong> Votre commande a bien été enregistrée.<br />
+        Notre service client vous appellera dans les prochaines <strong>24h</strong> pour confirmer l'expédition.
+      </p>
+      <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-500 mb-5 text-left space-y-1">
+        <p id="success-summary"></p>
+      </div>
+      <button onclick="document.getElementById('success-overlay').classList.remove('show')"
+        class="w-full bg-dark text-white font-bold py-3 rounded-xl text-sm">
+        Fermer
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║                    JAVASCRIPT PRINCIPAL                        ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <script>
+
+    // ════════════════════════════════════════════════════════════
+    //  ✅ WEBHOOK GOOGLE APPS SCRIPT
+    //  Collez ici l'URL de votre Web App déployée sur Google
+    //  Exemple : 'https://script.google.com/macros/s/AKf.../exec'
+    // ════════════════════════════════════════════════════════════
+    const GOOGLE_SHEET_WEBHOOK_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
+
+
+    // ════════════════════════════════════════════════════════════
+    //  🖼️  CORRECTION 3 — IMAGES PAR COULEUR
+    //
+    //  Remplacez chaque URL par le lien direct vers votre image
+    //  hébergée (Cloudinary, ImgBB, Google Drive, etc.).
+    //
+    //  FORMAT RECOMMANDÉ : 600×480 px, fond blanc ou neutre.
+    //  La clé doit correspondre EXACTEMENT au data-color
+    //  des boutons de couleur dans le HTML.
+    // ════════════════════════════════════════════════════════════
+    const COLOR_IMAGES = {
+      'Noir':  'https://placehold.co/600x480/1a1a1a/FF5A00?text=📸+Image+Noir',   // ← Remplacez par votre image Noir
+      'Blanc': 'https://placehold.co/600x480/f5f5f5/333333?text=📸+Image+Blanc',  // ← Remplacez par votre image Blanc
+      'Gris':  'https://placehold.co/600x480/9CA3AF/ffffff?text=📸+Image+Gris',   // ← Remplacez par votre image Gris
+    };
+
+
+    // ── État global de la commande ───────────────────────────
+    let order = {
+      color:    'Noir',
+      size:     null,
+      packId:   2,
+      packName: '2 paires',
+      price:    7500,
+    };
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Génération dynamique des boutons de pointure (39 → 45)
+    // ════════════════════════════════════════════════════════════
+    const sizes = [39, 40, 41, 42, 43, 44, 45];
+    const sizeContainer = document.getElementById('size-buttons');
+
+    sizes.forEach(s => {
+      const btn = document.createElement('button');
+      btn.textContent = s;
+      btn.dataset.size = s;
+      btn.className = 'size-btn border-2 border-white/20 bg-white/5 text-white font-bold rounded-xl w-12 h-12 text-sm';
+      btn.onclick = () => selectSize(btn, s);
+      sizeContainer.appendChild(btn);
+    });
+
+
+    // ════════════════════════════════════════════════════════════
+    //  CORRECTION 3 — Sélection de couleur + swap d'image
+    // ════════════════════════════════════════════════════════════
+    function selectColor(el, color) {
+      // 1. Mettre à jour les boutons (style actif)
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      // 2. Mettre à jour l'état
+      order.color = color;
+
+      // 3. Swap de l'image produit avec fondu enchaîné
+      const img = document.getElementById('product-image');
+      img.classList.add('swapping');           // fondu sortant (opacity → 0)
+      setTimeout(() => {
+        img.src = COLOR_IMAGES[color] || COLOR_IMAGES['Noir'];
+        img.alt = `Chaussures de Sport Confort+ — Couleur ${color}`;
+        img.classList.remove('swapping');      // fondu entrant (opacity → 1)
+      }, 250);
+
+      // 4. Mettre à jour le badge couleur sur l'image
+      document.getElementById('color-badge').textContent = `Couleur : ${color}`;
+
+      // 5. Mettre à jour le récapitulatif
+      updateSummary();
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Sélection de pointure
+    // ════════════════════════════════════════════════════════════
+    function selectSize(el, size) {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      order.size = size;
+      updateSummary();
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  CORRECTION 1+2 — Sélection de pack
+    //  → Change uniquement la bordure/fond de la carte sélectionnée
+    //  → Met à jour le total dans le récapitulatif
+    //  → NE cache / NE révèle AUCUN prix (ils sont toujours visibles)
+    // ════════════════════════════════════════════════════════════
+    function selectPack(el, id, name, price) {
+      // Reset toutes les cartes
+      document.querySelectorAll('.pack-card').forEach(card => {
+        card.classList.remove('active');
+        // Reset radio dot (écrasé par CSS .active)
+        const dot = card.querySelector('.radio-dot');
+        if (dot) dot.style.transform = 'scale(0)';
+        const ring = card.querySelector('.radio-ring');
+        if (ring) ring.style.borderColor = '';
+      });
+
+      // Activer la carte cliquée
+      el.classList.add('active');
+      const dot = el.querySelector('.radio-dot');
+      if (dot) dot.style.transform = 'scale(1)';
+
+      // Mettre à jour l'état
+      order.packId   = id;
+      order.packName = name;
+      order.price    = price;
+
+      // Mettre à jour le récapitulatif
+      updateSummary();
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Mise à jour du récapitulatif (séparé en éléments distincts)
+    // ════════════════════════════════════════════════════════════
+    function updateSummary() {
+      // Ligne "Pack"
+      document.getElementById('sum-pack').textContent =
+        `Pack ${order.packId} (${order.packName})`;
+
+      // Ligne "Couleur"
+      document.getElementById('sum-color').textContent = order.color;
+
+      // Ligne "Pointure"
+      const sizeEl = document.getElementById('sum-size');
+      if (order.size) {
+        sizeEl.innerHTML = `<strong class="text-white">${order.size}</strong>`;
+      } else {
+        sizeEl.innerHTML = `<span style="color:#FF5A00">Non choisie ⚠️</span>`;
+      }
+
+      // Total en grand (le chiffre seulement, "DA" est dans le HTML statique)
+      document.getElementById('sum-total').innerHTML =
+        `${order.price.toLocaleString('fr-DZ')} <span class="text-lg font-bold">DA</span>`;
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Scroll vers la section commande
+    // ════════════════════════════════════════════════════════════
+    function scrollToOrder() {
+      document.getElementById('order-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Soumission du formulaire → Google Sheets + Popup succès
+    // ════════════════════════════════════════════════════════════
+    async function submitOrder() {
+      const name  = document.getElementById('fullname').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const city  = document.getElementById('city').value;
+      const errEl = document.getElementById('form-error');
+
+      // Validation
+      if (!name || !phone || !city || !order.size) {
+        errEl.classList.remove('hidden');
+        errEl.textContent = !order.size
+          ? '⚠️ Veuillez choisir une pointure avant de confirmer.'
+          : '⚠️ Veuillez remplir tous les champs obligatoires.';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      errEl.classList.add('hidden');
+
+      // Préparer les données
+      const payload = {
+        timestamp : new Date().toISOString(),
+        nom       : name,
+        telephone : phone,
+        ville     : city,
+        couleur   : order.color,
+        pointure  : order.size,
+        pack      : `Pack ${order.packId} - ${order.packName}`,
+        total     : `${order.price} DA`,
+      };
+
+      // État chargement
+      const btn = document.getElementById('submit-btn');
+      btn.disabled  = true;
+      btn.innerHTML = '⏳ Envoi en cours…';
+
+      // ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
+      //  Envoi vers Google Sheets via Apps Script
+      //  Assurez-vous d'avoir défini GOOGLE_SHEET_WEBHOOK_URL
+      // ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
+      try {
+        if (GOOGLE_SHEET_WEBHOOK_URL !== 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
+          await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+            method : 'POST',
+            mode   : 'no-cors',   // requis pour Apps Script
+            headers: { 'Content-Type': 'application/json' },
+            body   : JSON.stringify(payload),
+          });
+        }
+      } catch (err) {
+        console.warn('Webhook (non bloquant) :', err);
+      }
+
+      // Afficher le popup de succès
+      document.getElementById('success-summary').innerHTML =
+        `📦 ${payload.pack}<br>🎨 Couleur : ${payload.couleur}<br>👟 Pointure : ${payload.pointure}<br>📍 Ville : ${payload.ville}<br>💰 Total : <strong>${order.price.toLocaleString('fr-DZ')} DA</strong>`;
+
+      document.getElementById('success-overlay').classList.add('show');
+
+      // Réinitialiser le bouton
+      btn.disabled  = false;
+      btn.innerHTML = '✅ CONFIRMER MA COMMANDE<br/><span class="text-sm font-normal normal-case opacity-90">💳 Paiement à la livraison — Sans risque</span>';
+
+      // ── Pixel Facebook — Événement Purchase (décommentez si actif) ──
+      // if (typeof fbq !== 'undefined') {
+      //   fbq('track', 'Purchase', { value: order.price, currency: 'DZD' });
+      // }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Scroll-reveal au défilement
+    // ════════════════════════════════════════════════════════════
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+    // ════════════════════════════════════════════════════════════
+    //  Initialisation : afficher l'état par défaut au chargement
+    // ════════════════════════════════════════════════════════════
+    updateSummary();
+
+  </script>
+
+</body>
+</html>
