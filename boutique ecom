@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confort+ | Chaussures de Sport Ultra-Confort</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:   '#FF5A00',
+            dark:    '#0A0A0A',
+            gold:    '#FFD700',
+            success: '#16A34A',
+          },
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #F8F8F8; color: #0A0A0A; margin: 0; }
+
+    /* ── CTA pulse animation ────────────────────────────────── */
+    @keyframes pulse-glow {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 90, 0, 0.7); transform: scale(1); }
+      50%  { box-shadow: 0 0 0 14px rgba(255, 90, 0, 0);  transform: scale(1.03); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 90, 0, 0);    transform: scale(1); }
+    }
+    .cta-pulse { animation: pulse-glow 1.8s ease-in-out infinite; }
+
+    /* ── Urgency badge blink ────────────────────────────────── */
+    @keyframes blink-badge {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+    .badge-blink { animation: blink-badge 1.2s ease-in-out infinite; }
+
+    /* ── Stars ──────────────────────────────────────────────── */
+    .stars { color: #FFD700; letter-spacing: 2px; }
+
+    /* ── Color swatch buttons ───────────────────────────────── */
+    .color-btn { transition: transform 0.15s, box-shadow 0.15s; }
+    .color-btn.active { transform: scale(1.12); box-shadow: 0 0 0 3px #FF5A00; }
+
+    /* ── Size buttons ───────────────────────────────────────── */
+    .size-btn { transition: all 0.15s; }
+    .size-btn.active { background: #FF5A00 !important; color: #fff !important; border-color: #FF5A00 !important; }
+
+    /* ── Pack cards ─────────────────────────────────────────── */
+    .pack-card {
+      transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: 2.5px solid #E5E7EB;
+      background: #ffffff;
+    }
+    .pack-card.active {
+      border-color: #FF5A00;
+      background: #FFF7F2;
+      box-shadow: 0 0 0 3px rgba(255,90,0,0.12);
+    }
+    .pack-card.active .pack-price { color: #FF5A00; }
+    .pack-card.active .radio-ring { border-color: #FF5A00; }
+    .pack-card.active .radio-dot  { background: #FF5A00; transform: scale(1); }
+    .pack-card .radio-dot { transform: scale(0); transition: transform 0.15s; }
+
+    /* ── Form inputs ────────────────────────────────────────── */
+    .form-input:focus { outline: none; border-color: #FF5A00; box-shadow: 0 0 0 3px rgba(255,90,0,0.15); }
+
+    /* ── Success overlay ────────────────────────────────────── */
+    #success-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #success-overlay.show { display: flex; }
+
+    /* ── Image swap transition ──────────────────────────────── */
+    #product-image { transition: opacity 0.25s ease; }
+    #product-image.swapping { opacity: 0; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <header class="sticky top-0 z-50 bg-dark shadow-md">
+    <div class="max-w-lg mx-auto flex items-center justify-between px-4 py-3">
+      <div class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-brand" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M21 9.5c0-.28-.22-.5-.5-.5H18V7a1 1 0 0 0-1.45-.9L13 8H5a3 3 0 0 0-3 3v1a3 3 0 0 0 3 3h1.05A2.5 2.5 0 0 0 8.5 17a2.5 2.5 0 0 0 2.45-2h3.1A2.5 2.5 0 0 0 16.5 17a2.5 2.5 0 0 0 2.45-2H20a1 1 0 0 0 1-1V9.5zM8.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </svg>
+        <span class="text-white font-extrabold text-lg tracking-tight">CONFORT<span class="text-brand">+</span></span>
+      </div>
+      <div class="badge-blink bg-brand text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-lg">
+        🔥 -50% Aujourd'hui
+      </div>
+    </div>
+  </header>
+
+  <section class="bg-dark text-white pt-8 pb-10 px-4">
+    <div class="max-w-lg mx-auto text-center">
+      <p class="text-brand text-xs font-bold uppercase tracking-widest mb-3">✦ Nouveauté 2026</p>
+      <h1 class="text-3xl font-black leading-tight mb-4">
+        Marchez sur un nuage :<br />
+        <span class="text-brand">Le confort ultime</span> pour<br />
+        vos pieds au quotidien
+      </h1>
+
+      <div class="relative mx-auto mb-6 rounded-2xl overflow-hidden bg-white/5 border border-white/10" style="max-width:340px;">
+        <img id="product-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop" alt="Chaussures" class="w-full object-cover" />
+        <div class="absolute top-3 left-3 bg-brand text-white text-xs font-black px-2.5 py-1 rounded-full shadow-lg">-50% OFF</div>
+        <div id="color-badge" class="absolute bottom-3 right-3 bg-dark/80 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">Couleur : Noir</div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 mb-5">
+        <span class="text-gray-500 line-through text-base">9 000 DA</span>
+        <span class="text-brand font-black text-3xl">4 500 DA</span>
+      </div>
+
+      <button onclick="scrollToOrder()" class="cta-pulse w-full bg-brand text-white font-extrabold text-lg py-4 px-6 rounded-2xl uppercase tracking-wide shadow-xl">
+        🛒 Commander maintenant
+      </button>
+    </div>
+  </section>
+
+  <section id="order-section" class="py-10 px-4 bg-dark">
+    <div class="max-w-lg mx-auto">
+      <h2 class="text-center text-2xl font-black text-white mb-2">Choisissez votre offre</h2>
+      <p class="text-center text-gray-400 text-sm mb-7">🔒 Paiement à la livraison</p>
+
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-3 uppercase tracking-wide">Couleur</p>
+        <div class="flex gap-3">
+          <button onclick="selectColor(this, 'Noir')" class="color-btn active flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full bg-black border-2 border-white/30 block"></span>Noir
+          </button>
+          <button onclick="selectColor(this, 'Blanc')" class="color-btn flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full bg-white border-2 border-gray-300 block"></span>Blanc
+          </button>
+          <button onclick="selectColor(this, 'Gris')" class="color-btn flex-1 flex flex-col items-center gap-2 py-3 px-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-semibold">
+            <span class="w-9 h-9 rounded-full border-2 border-gray-500 block" style="background:#9CA3AF;"></span>Gris
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-3 uppercase tracking-wide">Pointure</p>
+        <div id="size-buttons" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-white font-bold text-sm mb-4 uppercase tracking-wide">Choisissez votre offre</p>
+
+        <div onclick="selectPack(this, 1, '1 paire', 4500)" class="pack-card rounded-2xl p-4 mb-3">
+          <div class="flex items-center gap-3">
+            <div class="radio-ring w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center flex-shrink-0"><div class="radio-dot w-3 h-3 rounded-full bg-brand"></div></div>
+            <div class="flex-1"><p class="font-bold text-dark text-sm">Pack 1 · 1 Paire</p></div>
+            <div class="text-right"><p class="pack-price font-black text-dark text-2xl">4 500 DA</p></div>
+          </div>
+        </div>
+
+        <div onclick="selectPack(this, 2, '2 paires', 7500)" class="pack-card active rounded-2xl p-4 mb-3 relative mt-5">
+          <div class="flex items-center gap-3">
+            <div class="radio-ring w-6 h-6 rounded-full border-2 border-brand flex items-center justify-center flex-shrink-0"><div class="radio-dot w-3 h-3 rounded-full bg-brand" style="transform:scale(1)"></div></div>
+            <div class="flex-1"><p class="font-bold text-dark text-sm">Pack 2 · 2 Paires</p></div>
+            <div class="text-right"><p class="pack-price font-black text-brand text-2xl">7 500 DA</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white/10 border border-white/20 rounded-2xl p-4 mb-6">
+        <div id="summary-details" class="text-gray-300 text-sm space-y-1">
+          <p>📦 Pack : <strong class="text-white" id="sum-pack">2 paires</strong></p>
+          <p>🎨 Couleur : <strong class="text-white" id="sum-color">Noir</strong></p>
+          <p>👟 Pointure : <strong class="text-white" id="sum-size"><span class="text-brand">Non choisie ⚠️</span></strong></p>
+          <p class="pt-2 text-white font-bold">Total : <span id="sum-total" class="text-brand text-2xl">7 500 DA</span></p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-5 shadow-2xl">
+        <div class="mb-4">
+          <label class="block text-dark font-semibold text-sm mb-1.5">Nom et Prénom</label>
+          <input type="text" id="nom" placeholder="Ex : Ahmed Benali" class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark" required />
+        </div>
+        <div class="mb-4">
+          <label class="block text-dark font-semibold text-sm mb-1.5">Numéro de Téléphone *</label>
+          <input type="tel" id="numero" placeholder="Ex : 0551 23 45 67" class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark" required />
+        </div>
+        <div class="mb-5">
+          <label class="block text-dark font-semibold text-sm mb-1.5">Ville / Wilaya</label>
+          <select id="city" class="form-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-dark bg-white" required>
+            <option value="">-- Choisissez votre Wilaya --</option>
+            <option>16 - Alger</option><option>31 - Oran</option><option>25 - Constantine</option><option>09 - Blida</option>
+          </select>
+        </div>
+
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-sm mb-4 font-medium">
+          ⚠️ Veuillez remplir tous les champs et choisir une pointure.
+        </div>
+
+        <button id="submit-btn" onclick="submitOrder()" class="w-full bg-brand text-white font-extrabold text-base py-4 px-6 rounded-2xl uppercase tracking-wide shadow-lg">
+          ✅ CONFIRMER MA COMMANDE
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="success-overlay">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl">
+      <h2 class="text-dark font-black text-2xl mb-2">Commande enregistrée ! 🎉</h2>
+      <p class="text-gray-600 text-sm mb-4">Votre commande a bien été reçue sur Google Sheets.</p>
+      <button onclick="document.getElementById('success-overlay').classList.remove('show')" class="w-full bg-dark text-white font-bold py-3 rounded-xl text-sm">Fermer</button>
+    </div>
+  </div>
+
+  <script>
+    // URL ORIGINALE CORRIGÉE (Se termine bien par /exec)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzHOinK3X6YBhl-DTj7LzJrvhtbFyc6zAE4sEpC6eR3BzGgZVDwadmkmshUGIlgLWd4uQ/exec';
+
+    const COLOR_IMAGES = {
+      'Noir': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop',
+      'Blanc': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop',
+      'Gris': 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600&auto=format&fit=crop'
+    };
+
+    let selectedColor = 'Noir';
+    let selectedSize = '';
+    let selectedPackName = '2 paires';
+    let selectedPrice = 7500;
+
+    // Boutons pointure
+    const sizeContainer = document.getElementById('size-buttons');
+    const sizes = [39, 40, 41, 42, 43, 44, 45];
+    sizes.forEach(size => {
+      const btn = document.createElement('button');
+      btn.innerText = size;
+      btn.className = "size-btn w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-sm transition-all";
+      btn.onclick = function() { selectSize(this, size); };
+      sizeContainer.appendChild(btn);
+    });
+
+    function selectColor(element, colorName) {
+      document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      selectedColor = colorName;
+      document.getElementById('product-image').src = COLOR_IMAGES[colorName];
+      document.getElementById('color-badge').innerText = "Couleur : " + colorName;
+      updateSummary();
+    }
+
+    function selectSize(element, sizeNumber) {
+      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      selectedSize = sizeNumber;
+      updateSummary();
+    }
+
+    function selectPack(element, packId, packName, price) {
+      document.querySelectorAll('.pack-card').forEach(card => {
+        card.classList.remove('active');
+        const dot = card.querySelector('.radio-dot');
+        if(dot) dot.style.transform = 'scale(0)';
+      });
+      element.classList.add('active');
+      const currentDot = element.querySelector('.radio-dot');
+      if(currentDot) currentDot.style.transform = 'scale(1)';
+      selectedPackName = packName;
+      selectedPrice = price;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      document.getElementById('sum-pack').innerText = selectedPackName;
+      document.getElementById('sum-color').innerText = selectedColor;
+      document.getElementById('sum-size').innerText = selectedSize ? selectedSize : "Non choisie ⚠️";
+      document.getElementById('sum-total').innerText = selectedPrice.toLocaleString() + ' DA';
+    }
+
+    function scrollToOrder() {
+      document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function submitOrder() {
+      const nom = document.getElementById('nom').value.trim();
+      const tel = document.getElementById('numero').value.trim();
+      const city = document.getElementById('city').value;
+      const errorDiv = document.getElementById('form-error');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (!nom || !tel || !city || !selectedSize) {
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+      errorDiv.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.innerText = "ENVOI EN COURS...";
+
+      const formData = new FormData();
+      formData.append('nom', nom);
+      formData.append('telephone', tel);
+      formData.append('wilaya', city);
+      formData.append('pack', selectedPackName);
+      formData.append('couleur', selectedColor);
+      formData.append('pointure', selectedSize);
+      formData.append('total', selectedPrice + " DA");
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          submitBtn.disabled = false;
+          submitBtn.innerText = "✅ CONFIRMER MA COMMANDE";
+          document.getElementById('success-overlay').classList.add('show');
+          document.getElementById('nom').value = "";
+          document.getElementById('numero').value = "";
+          document.getElementById('city').value = "";
+        })
+        .catch(error => {
+          submitBtn.disabled = false;
+          submitBtn.innerText = "❌ RÉESSAYER";
+          alert("Erreur de connexion. Vérifiez que votre script Google est bien déployé en 'Tout le monde'.");
+        });
+    }
+  </script>
+</body>
+</html>
